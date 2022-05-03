@@ -38,7 +38,7 @@ public class Services {
         System.out.println("5. Cautare ");
         System.out.println("6. Sortare produse dupa pret. (asc/desc)");
         System.out.println("7. Listarea comenzilor unui client.");
-        System.out.println("8. Udate factura");
+        System.out.println("8. Update factura");
         System.out.println("9. Delete comanda");
         System.out.println("10. Delete producator ");
         System.out.println("0. Iesire. ");
@@ -106,7 +106,7 @@ public class Services {
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Optiune gresita!");
+                    System.out.println("Invalid Option!");
 
 
             }
@@ -125,7 +125,7 @@ public class Services {
         int nrprod = scanner.nextInt();
         List<Products> list = new ArrayList<>();
         Products prod = new Products();
-        System.out.println("LIsta de produse: ");
+        System.out.println("Lista de produse: ");
         for(int i=0; i< nrprod;i++) {
             System.out.println("NUme prod");
             String nume = scanner.next();
