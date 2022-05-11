@@ -4,8 +4,6 @@ import exception.InvalidDataException;
 import order.Client;
 import repository.ClientRepository;
 import services.csv.ClientCSVService;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class ClientService {
         clientRepository.update(id, Client);
     }
 
-    public void deleteBill(int id)  {
+    public void deleteClient(int id)  {
         clientRepository.delete(id);
     }
 

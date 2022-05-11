@@ -2,6 +2,8 @@ package courier;
 
 import person.Person;
 
+import java.util.Scanner;
+
 public class Courier extends Person {
 
     private int idCourier = 0;
@@ -45,4 +47,7 @@ public class Courier extends Person {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
+
+
+
 }

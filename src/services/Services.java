@@ -5,6 +5,8 @@ import courier.DeliveryCompany;
 import exception.InvalidDataException;
 import order.Bill;
 import order.Client;
+import order.Order;
+import product.Distributors;
 import product.Products;
 import services.csv.Audit;
 import services.csv.ClientCSVService;
@@ -22,9 +24,30 @@ public class Services {
     private ClientService clientService = new ClientService();
     private ProductService productService = new ProductService();
     private DeliveryService deliveryService = new DeliveryService();
+    private DistributorsService distributorsService = new DistributorsService();
+    private OrderService orderService = new OrderService();
 
 
     public Services(){}
+
+
+    public void loadCSVFILES() {
+
+        clientService.getFromCSVFile();
+        productService.getFromCSVFile();
+        orderService.getFromCSVFile();
+        courierService.getFromCSVFile();
+
+    }
+
+    public void listCSVFILES() {
+
+        clientService.listCSV();
+        productService.listCSV();
+        orderService.listCSV();
+        courierService.listCSV();
+
+    }
 
     private void audit(String action){
 
@@ -32,17 +55,6 @@ public class Services {
         LocalDateTime timeNow = LocalDateTime.now();
         Audit auditServices = new Audit();
         auditServices.write(action, dtf.format(timeNow));
-    }
-
-    public void loadCSVFILES() {
-        clientService.getFromCSVFile();
-
-
-    }
-    public void listCSVFILES() {
-        clientService.listCSV();
-
-
     }
 
     private void Menu() {
@@ -59,7 +71,7 @@ public class Services {
         System.out.println("7. Delete distributor");
         System.out.println("8. Sortare produse dupa pret. (asc/desc)");
         System.out.println("9. Listarea comenzilor unui client.");
-        System.out.println("10.  ");
+        System.out.println("10. Update product price ");
         System.out.println("0. Iesire. ");
 
 
@@ -78,7 +90,7 @@ public class Services {
             switch (option) {
                 case 1: {
                     String clasa;
-                    System.out.println("Choose the class: (Courier/Delivery/Bill/Client/Order/Distributors/Products)");
+                    System.out.println("Choose the class: (Courier/DeliveryC/Bill/Client/Order/Distributors/Products)");
                     clasa = sc.next();
                     switch (clasa) {
                         case "Bill": {
@@ -88,7 +100,7 @@ public class Services {
                         }
                         case "Courier": {
                             readCourier();
-                            audit("Added new bill!");
+                            audit("Added new courier!");
                             break;
                         }
                         case "Client":{
@@ -98,10 +110,17 @@ public class Services {
                         }
                         case "Products":{
                             readProduct();
+                            audit("Added new product!");
                             break;
                         }
-                        case "Delivery":{
-                            readDelivery();
+                        case "DeliveryC":{
+                            readDeliveryC();
+                            audit("Added new delivery company!");
+                            break;
+                        }
+                        case "Order":{
+                            readOrder();
+                            audit("Added new order!");
                             break;
                         }
 
@@ -111,7 +130,7 @@ public class Services {
                 break;
                 case 2: {
                     String clasa;
-                    System.out.println("Choose the class: (Courier/DeliveryCompany/Bill/Client/Order/Distributors/Products)");
+                    System.out.println("Choose the class: (Courier/DeliveryC/Bill/Client/Order/Distributors/Products)");
                     clasa = sc.next();
                     switch (clasa) {
                         case "Bill": {
@@ -128,6 +147,14 @@ public class Services {
                         }
                         case "Products": {
                             printAllProducts();
+                            break;
+                        }
+                        case "Oder": {
+                            printAllOrders();
+                            break;
+                        }
+                        case "DeliveryC": {
+                            printAllDeliveryC();
                             break;
                         }
 
@@ -150,43 +177,83 @@ public class Services {
         return executeOption();
         }
 
-    public void readDelivery() throws InvalidDataException {
+    private void readOrder() throws InvalidDataException {
+
+        System.out.println("Id order: ");
+        int idorder = scanner.nextInt();
+        System.out.println("Id bill: ");
+        int idbill = scanner.nextInt();
+        System.out.println("Id delivery company: ");
+        int idDelc = scanner.nextInt();
+        int clindex = Integer.parseInt(scanner.nextLine());
+
+        orderService.addNewOrder(idorder, idbill, idDelc, clindex);
+
+
+    }
+
+    public void readDeliveryC() throws InvalidDataException {
 
         System.out.println("Name: ");
         String name = scanner.next();
-        System.out.println("Id courier: ");
-        int idcour = scanner.nextInt();
         System.out.println("Number of couriers: ");
         int noCouriers = scanner.nextInt();
         SortedSet<Courier> couriers = new TreeSet<Courier>();
 
         for(int i=0; i< noCouriers; i++){
 
-            readCourier();
+            System.out.println("First name: ");
+            String fname = scanner.next();
+            System.out.println("Last name: ");
+            String lname = scanner.next();
+            System.out.println("Phone number: ");
+            String phno = scanner.next();
+            System.out.println("Id courier: (must be uniq)");
+            int idc = scanner.nextInt();
+            Courier c = new Courier(fname, lname, phno, idc);
+
+            couriers.add(c);
         }
-        deliveryService.addNewDelivery(name, idcour, couriers);
+        deliveryService.addNewDelivery(name, couriers);
     }
 
 
     public void readBill() throws InvalidDataException {
+
         System.out.println("Id bill: ");
         int idbill = scanner.nextInt();
         System.out.println("Number of products: ");
         int noprod = scanner.nextInt();
-       // Products list = new Products();
         ArrayList<Products> list = new ArrayList<>();
 
         for(int i=0; i < noprod; i++)
         {
-           list.add(readArrProduct());
+            System.out.println("Name: ");
+            String name = scanner.next();
+            System.out.println("Price: ");
+            double price = scanner.nextDouble();
+            System.out.println("Quantity: ");
+            int quantity = scanner.nextInt();
+
+            Products p = new Products(name, price, quantity);
+            list.add(p);
+
+
+
         }
+        //double totalPrice = calculatePrice(list, noprod);
+        double totalPrice=0;
+        for(int i=0; i < noprod; i++){
+            //    totalPrice = totalPrice + list.price(i) * list.quantity(i);
+        }
+        billService.addNewBill(idbill, list, totalPrice);
 
 
 //        System.out.println("Total price: ");
 //        double totalPrice = scanner.nextDouble();
         //totalPrice = setTotalPrice(list.calculatePrice(prod)) ;
-        double totalPrice = calculatePrice(list,noprod );
-        billService.addNewBill(idbill, list, totalPrice);
+        //double totalPrice = calculatePrice(list,noprod );
+        //billService.addNewBill(idbill, list, totalPrice);
 
 
     }
@@ -194,7 +261,7 @@ public class Services {
     public double calculatePrice(ArrayList<Products> prod, int noprod){
         double totalPrice=0;
         for(int i=0; i < noprod; i++){
-          //  totalPrice = totalPrice + prod. * prod.getQuantity();
+        //    totalPrice = totalPrice + prod.getPrice(i) * prod.getQuantity(i);
         }
         return totalPrice ;
 
@@ -267,8 +334,22 @@ public class Services {
             System.out.println("No bills yet!");
         for(Bill bill : billVector) {
             for(Products products: prodVector)
-            System.out.println(bill);
+                System.out.println(bill.getProducts(products));
            // printAllProducts(billVector);
+
+
+        }
+    }
+
+    void printAllDeliveryC(){
+        ArrayList<DeliveryCompany> compVector = deliveryService.getAllDeliverycomp();
+        ArrayList<Courier> couriersVector = courierService.getAllCouriers();
+        if(compVector.size() == 0)
+            System.out.println("No company yet!");
+        for(DeliveryCompany delcomp : compVector) {
+            for(Courier courier: couriersVector)
+            System.out.println(delcomp);
+
 
 
         }
@@ -276,11 +357,20 @@ public class Services {
 
 
     void printAllCouriers(){
-        Vector<Courier> couriers = courierService.getAllCouriers();
+        ArrayList<Courier> couriers = courierService.getAllCouriers();
         if(couriers.size() == 0)
             System.out.println("No couriers yet!");
         for(Courier courier : couriers) {
             System.out.println(courier);
+        }
+    }
+
+    void printAllOrders(){
+        ArrayList<Order> orders = orderService.getAllOrders();
+        if(orders.size() == 0)
+            System.out.println("No orders yet!");
+        for(Order order : orders) {
+            System.out.println(order);
         }
     }
 
@@ -303,56 +393,6 @@ public class Services {
     }
 
 
-//    private void addCourier(DeliveryCompany company) {
-//        Scanner scn = new Scanner(System.in);
-//        System.out.println("First name: ");
-//        String fName = scn.next();
-//        System.out.println("Last name: ");
-//        String lName = scn.next();
-//        System.out.println("Phone number (10 digits, start with 07): ");
-//        String phoneNr;
-//        int cond = 0;
-//        while (cond == 0) {
-//            phoneNr = scn.next();
-//            cond = 1;
-//            if (isValid(phoneNr)) {
-//            } else {
-//                System.out.println("Invalid number!");
-//                cond = 0;
-//            }
 
-//        int condition = 0;
-//        while(condition == 0){
-//            String phoneNr = scn.next();
-//            condition = 1;
-//            try{
-//            if(!phoneNr.matches("(07)[0-9]{8}" )) {
-//                throw phoneNr;
-//            }} catch(...)
-//            System.out.println("Invalid phone number!");
-//            condition = 0;
-//        }
-//
-//            Courier newCourier = new Courier(fName, lName, phoneNr);
-//            newCourier.setIdCourier(company.getIdCourier());
-//            company.addCourier(newCourier);
-//            System.out.println(newCourier);
-//        }
-//    }
-//    private void afis(DeliveryCompany del){
-//        SortedSet<Courier> curier = del.getCouriers();
-//        for(Courier cour : curier)
-//            System.out.println(curier);
-//    }
-//
-//    public boolean isValid(String number){
-//
-//        if(number.matches("(07)[0-9]{8}" ))
-//            return true;
-//            else
-//            {
-//                return false;
-//            }
-//        }
 
 }

@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClientCSVService implements GenericCSV<Client> {
 
@@ -17,7 +19,7 @@ public class ClientCSVService implements GenericCSV<Client> {
 
     public static ClientCSVService getInstance() {
 //        if (INSTANCE == null) {
-//            ClientCSV INSTANCE = new ClientCSV();
+//            INSTANCE =
 //            return INSTANCE;
 //        }
         return  INSTANCE;
@@ -29,7 +31,7 @@ public class ClientCSVService implements GenericCSV<Client> {
         try(FileWriter fileWriter = new FileWriter("files/clients.csv", true)) {
             fileWriter.write(client.getFirstName()+ "," + client.getLastName() + ","
                     + client.getPhonenumber() + "," + client.getEmail() + ","
-                    + client.getAddress() + "," + "\n");
+                    + client.getAddress() + "\n");
             fileWriter.flush();
         } catch (IOException ex) {
             System.out.println("Can't write to file!");
@@ -38,8 +40,8 @@ public class ClientCSVService implements GenericCSV<Client> {
     }
 
     @Override
-    public ArrayList<Client> read() {
-        ArrayList<Client> clients = new ArrayList<>();
+    public List<Client> read() {
+        List<Client> clients = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("files/clients.csv"))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {

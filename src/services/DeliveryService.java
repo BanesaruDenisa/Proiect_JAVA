@@ -32,11 +32,11 @@ public class DeliveryService {
         deliveryCompRepository.add(newDelivery);
     }
 
-    public void addNewDelivery(String name, int idcourier,  SortedSet<Courier> list) {
+    public void addNewDelivery(String name,  SortedSet<Courier> list) {
         ////exceptii
 
         couriersList.addAll(list);
-        DeliveryCompany newDelivery = new DeliveryCompany(name, idcourier, list);
+        DeliveryCompany newDelivery = new DeliveryCompany(name, list);
         deliveryCompRepository.add(newDelivery);
     }
 

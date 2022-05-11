@@ -40,8 +40,8 @@ public class Bill {
         this.idBill = idBill;
     }
 
-    public List<Products> getProducts() {
-        return products;
+    public List<Products> getProducts(Products products) {
+        return this.products;
     }
 
     public void setProducts(ArrayList<Products> products) {
@@ -66,7 +66,7 @@ public class Bill {
     }
 
     /////pret total pe factura
-//    public double calculatePrice(Products prod){
+//    public double calculatePrice(ArrayList<Products> prod){
 //        products.add(prod);
 //        return totalPrice = totalPrice + (prod.getPrice()) * prod.getQuantity();
 //

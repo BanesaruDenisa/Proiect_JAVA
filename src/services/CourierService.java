@@ -2,8 +2,13 @@ package services;
 
 import courier.Courier;
 import exception.InvalidDataException;
+import order.Client;
 import repository.CourierRepository;
+import services.csv.ClientCSVService;
+import services.csv.CourierCSVService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class CourierService {
@@ -11,9 +16,9 @@ public class CourierService {
     private CourierRepository courierRepository = new CourierRepository();
 
 
-    public Vector<Courier> getAllCouriers() {
+    public ArrayList<Courier> getAllCouriers() {
 
-        Vector<Courier> couriers = new Vector<>();
+        ArrayList<Courier> couriers = new ArrayList<>();
         for(int i= 0; i < courierRepository.getSize(); i++)
             couriers.add(courierRepository.get(i));
 
@@ -42,5 +47,23 @@ public class CourierService {
 
     public void deleteBill(int id)  {
         courierRepository.delete(id);
+    }
+
+
+    public void getFromCSVFile(){
+        CourierCSVService csvFile = CourierCSVService.getInstance();
+        ArrayList<Courier> couriers = new ArrayList<>(csvFile.read());
+        for(Courier courier : couriers) {
+            courierRepository.add(courier);
+        }
+    }
+
+    public void listCSV(){
+        CourierCSVService courierCSV = CourierCSVService.getInstance();
+        CourierService courierService = new CourierService();
+        ArrayList<Courier> crListCsv = new ArrayList<>(courierService.getAllCouriers());
+        for(Courier courier : crListCsv){
+            courierCSV.write(courier);
+        }
     }
 }

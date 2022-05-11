@@ -10,7 +10,7 @@ import java.util.SortedSet;
 
 public class CourierRepository implements GenericRepository<Courier> {
 
-    private final List<Courier> courierList = new ArrayList<>();
+    private final ArrayList<Courier> courierList = new ArrayList<>();
 
 
     @Override

@@ -3,7 +3,7 @@ package product;
 
 import java.util.ArrayList;
 
-public class Products  {
+public class Products extends ArrayList<Products> {
 
     private String name;
     private double price;

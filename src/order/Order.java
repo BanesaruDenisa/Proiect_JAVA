@@ -21,6 +21,15 @@ public class Order {
         nrOrder++;
         this.idOrder = nrOrder;
     }
+
+    public Order(Order order) {
+        nrOrder++;
+        this.idOrder = order.idOrder;
+        this.idBill = order.idBill;
+        this.idDelComp = order.idDelComp;
+        this.client = order.client;
+    }
+
     public void setIdOrder(Integer idOrd){
         this.idOrder = idOrd;
     }

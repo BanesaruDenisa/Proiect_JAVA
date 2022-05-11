@@ -1,10 +1,14 @@
 package services;
 
 import exception.InvalidDataException;
+import order.Client;
 import product.Products;
 import repository.ProductsRepository;
+import services.csv.ClientCSVService;
+import services.csv.ProductsCSVService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductService {
 
@@ -59,5 +63,22 @@ public class ProductService {
 
     public void deleteProduct(int id)  {
         productRepository.delete(id);
+    }
+
+
+    public void getFromCSVFile(){
+        ProductsCSVService csvFile = ProductsCSVService.getInstance();
+        List<Products> products = new ArrayList<>(csvFile.read());
+        for(Products prod : products) {
+            productRepository.add(prod);
+        }
+    }
+    public void listCSV(){
+        ProductsCSVService prodCSV = ProductsCSVService.getInstance();
+        ProductService productService = new ProductService();
+        List<Products> prListCsv = new ArrayList<>(productService.getAllProducts());
+        for(Products pr : prListCsv){
+            prodCSV.write(pr);
+        }
     }
 }

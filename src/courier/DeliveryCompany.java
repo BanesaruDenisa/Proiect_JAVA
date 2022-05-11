@@ -7,15 +7,15 @@ public class DeliveryCompany {
 
     private static Integer countComp = 0;
     private String name;
-    private int idCourier;
+    //private int idCourier;
     private SortedSet<Courier> couriers = new TreeSet<Courier>();
 
 
-    public DeliveryCompany(String name, int idCourier, SortedSet<Courier> couriers) {
+    public DeliveryCompany(String name, SortedSet<Courier> couriers) {
 
         countComp++;
         this.name = name;
-        this.idCourier = idCourier;
+        //this.idCourier = idCourier;
         this.couriers = couriers;
     }
 
@@ -30,7 +30,7 @@ public class DeliveryCompany {
     public DeliveryCompany(DeliveryCompany deliveryCompany) {
         countComp++;
         this.name = deliveryCompany.name;
-        this.idCourier = deliveryCompany.idCourier;
+       // this.idCourier = deliveryCompany.idCourier;
         this.couriers = deliveryCompany.couriers;
     }
 
@@ -43,20 +43,20 @@ public class DeliveryCompany {
         this.name = name;
     }
 
-    public int getIdCourier() {
-        return idCourier;
-    }
+    //public int getIdCourier() {return idCourier;}
 
-    public void setIdCourier(int idCourier) {
-        this.idCourier = idCourier;
-    }
+   // public void setIdCourier(int idCourier) {this.idCourier = idCourier;}
 
-    public SortedSet<Courier> getCouriers() {
+    public SortedSet<Courier> getCouriers(Courier courier) {
         return couriers;
     }
 
+    public void setCouriers(SortedSet<Courier> couriers) {
+        this.couriers = couriers;
+    }
+
     public void addCourier(Courier c){
-        c.setIdCourier(idCourier);
+       // c.setIdCourier(idCourier);
         couriers.add(c);
     }
 
