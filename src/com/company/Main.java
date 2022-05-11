@@ -11,6 +11,7 @@ public class Main {
         Services myServ = new Services();
         myServ.executeOption();
         myServ.loadCSVFILES();
+        myServ.listCSVFILES();
 
 
 

@@ -25,12 +25,11 @@ public class ClientCSVService implements GenericCSV<Client> {
 
     @Override
     public void write(Client client) {
-        StringBuilder stringBuilder = new StringBuilder();
 
         try(FileWriter fileWriter = new FileWriter("files/clients.csv", true)) {
-            fileWriter.write(stringBuilder.append(client.getFirstName()) + "," + stringBuilder.append(client.getLastName()) + ","
-                    + stringBuilder.append(client.getPhonenumber()) + "," + stringBuilder.append(client.getEmail()) + ","
-                    + stringBuilder.append(client.getAddress()) + "," + "\n");
+            fileWriter.write(client.getFirstName()+ "," + client.getLastName() + ","
+                    + client.getPhonenumber() + "," + client.getEmail() + ","
+                    + client.getAddress() + "," + "\n");
             fileWriter.flush();
         } catch (IOException ex) {
             System.out.println("Can't write to file!");

@@ -7,6 +7,7 @@ import services.csv.ClientCSVService;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClientService {
     private ClientRepository clientRepository = new ClientRepository();
@@ -53,9 +54,17 @@ public class ClientService {
 
     public void getFromCSVFile(){
         ClientCSVService csvFile = ClientCSVService.getInstance();
-        ArrayList<Client> clients = new ArrayList<>(csvFile.read());
+        List<Client> clients = new ArrayList<>(csvFile.read());
         for(Client client : clients) {
             clientRepository.add(client);
+        }
+    }
+    public void listCSV(){
+        ClientCSVService clientCSV = ClientCSVService.getInstance();
+        ClientService clientService = new ClientService();
+        ArrayList<Client> clListCsv = new ArrayList<>(clientService.getAllClients());
+        for(Client client : clListCsv){
+            clientCSV.write(client);
         }
     }
 

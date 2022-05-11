@@ -36,16 +36,13 @@ public class Services {
 
     public void loadCSVFILES() {
         clientService.getFromCSVFile();
-        listCSV();
+
 
     }
-    public void listCSV(){
-        ClientCSVService clientCSV = ClientCSVService.getInstance();
-        ClientService clientService = new ClientService();
-        ArrayList<Client> clListCsv = new ArrayList<>(clientService.getAllClients());
-        for(Client client : clListCsv){
-            clientCSV.write(client);
-        }
+    public void listCSVFILES() {
+        clientService.listCSV();
+
+
     }
 
     private void Menu() {
@@ -181,8 +178,9 @@ public class Services {
 
         for(int i=0; i < noprod; i++)
         {
-          // list.readProduct();
+           list.add(readArrProduct());
         }
+
 
 //        System.out.println("Total price: ");
 //        double totalPrice = scanner.nextDouble();
@@ -243,12 +241,12 @@ public class Services {
         int quantity = scanner.nextInt();
 
         productService.addNewProduct(name, price, quantity);
-        System.out.println("Product added!");
+        System.out.println("New product added!");
 
 
     }
-    public ArrayList<Products> readArrProduct() throws InvalidDataException {
-        ArrayList<Products> arrayList = new ArrayList<>();
+    public Products readArrProduct() throws InvalidDataException {
+        //ArrayList<Products> arrayList = new ArrayList<>();
         System.out.println("Name: ");
         String name = scanner.next();
         System.out.println("Price: ");
@@ -256,10 +254,9 @@ public class Services {
         System.out.println("Quantity: ");
         int quantity = scanner.nextInt();
 
-//        arrayList.addNewProduct(name, price, quantity);
-//        System.out.println("Product added!");
-//        return new ArrayList<Products>(name, price, quantity);   ????
-        return  null;
+        //arrayList.addNewProduct(name, price, quantity);
+        System.out.println("Product added!");
+        return new Products(name, price, quantity);
 
     }
 
