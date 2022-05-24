@@ -40,11 +40,7 @@ public class ProductsRepository implements GenericRepository<Products> {
         products.addAll(entity);
     }
 
-    public void afis() {
-        for(int i=0; i< products.size(); i++){
-            System.out.println(products.get(i));
-        }
-    }
+
     @Override
     public String toString() {
         return "ProductsRepository{" +

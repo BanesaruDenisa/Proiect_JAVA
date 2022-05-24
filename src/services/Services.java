@@ -1,5 +1,10 @@
 package services;
 
+import config.DBConnection;
+import config.DbRepository.ClientDbRepo;
+import config.DbRepository.CourierDbRepo;
+import config.DbRepository.OrderDbRepo;
+import config.DbRepository.ProductDbRepo;
 import courier.Courier;
 import courier.DeliveryCompany;
 import exception.InvalidDataException;
@@ -11,6 +16,7 @@ import product.Products;
 import services.csv.Audit;
 import services.csv.ClientCSVService;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -27,8 +33,344 @@ public class Services {
     private DistributorsService distributorsService = new DistributorsService();
     private OrderService orderService = new OrderService();
 
+    //10
+    List<Order> orders = orderService.getAllOrders();
+
 
     public Services(){}
+
+
+
+
+    private void Menu() {
+
+        System.out.println("******* Managing the orders of a store *******");
+        System.out.println("--- What do you want to do? ---");
+        System.out.println();
+        System.out.println("1. Read ");
+        System.out.println("2. Print ");
+        System.out.println("3. Update order");
+        System.out.println("4. Update bill ");
+        System.out.println("5. Delete client ");
+        System.out.println("6. Delete order");
+        System.out.println("7. Delete product");
+        System.out.println("8. Sort products by quantity. (ascendent)");
+        System.out.println("9. Update quantity of product.");
+        System.out.println("10. Sort distributors by number of products. (ascendent)");
+        System.out.println("0. Exit. ");
+
+
+    }
+
+    private void MenuDB() {
+
+        System.out.println("******* Managing the orders of a store *******");
+        System.out.println("--- What do you want to do? ---");
+        System.out.println();
+        System.out.println("-- Print from MySQL --");
+        System.out.println("1. Clients ");
+        System.out.println("2. Couriers ");
+        System.out.println("3. Orders ");
+        System.out.println("4. Products ");
+        System.out.println("-- Read and save in MySQL --");
+        System.out.println("5. Client  ");
+        System.out.println("6. Courier ");
+        System.out.println("7. Product ");
+        System.out.println("8. Order ");
+        System.out.println("0. Exit. ");
+
+
+    }
+
+    public int executeOptionDB() throws InvalidDataException, SQLException, ClassNotFoundException {
+
+        DBConnection db = new DBConnection("jdbc:mysql://localhost:3306/store", "root", "bananaverde.ro20");
+
+        Scanner sc = new Scanner(System.in);
+        int option = 0;
+        MenuDB();
+        System.out.println(" Choose an option: ");
+
+        option = sc.nextInt();
+        if (option >= 0 && option < 9) {
+
+            switch (option) {
+                case 1 :
+                    ClientDbRepo clDB = new ClientDbRepo(db);
+                    List<Client> clientList = clDB.getAllClients();
+                    for(Client client: clientList){
+                        System.out.println(client);
+                    }
+                    break;
+                case 2 :
+                    CourierDbRepo crDB = new CourierDbRepo(db);
+                    List<Courier> courierList = crDB.getAllCouriers();
+                    for(Courier courier: courierList){
+                        System.out.println(courier);
+                    }
+                    break;
+                case 3 :
+                    OrderDbRepo orDb = new OrderDbRepo(db);
+                    List<Order> orderList = orDb.getAllOrders();
+                    for(Order order: orderList){
+                        System.out.println(order);
+                    }
+                    break;
+                case 4 :
+                    ProductDbRepo prDb = new ProductDbRepo(db);
+                    List<Products> productsList = prDb.getAllProducts();
+                    for(Products prod: productsList){
+                        System.out.println(prod);
+                    }
+                    break;
+                case 5 :
+                    List<Client> cl = new ArrayList<>();
+
+                    System.out.println("First name: ");
+                    String fname = scanner.next();
+                    System.out.println("Last name: ");
+                    String lname = scanner.next();
+                    System.out.println("Phone number: ");
+                    String phno = scanner.next();
+                    System.out.println("Email: ");
+                    String email = scanner.next();
+                    System.out.println("Address: ");
+                    scanner.useDelimiter("\n");
+                    String address = scanner.next();
+                    scanner.reset();
+
+                    cl.add(new Client(fname, lname, phno, email, address));
+                    ClientDbRepo cr = new ClientDbRepo(db);
+                    cr.save(cl);
+                    break;
+                case 6 :
+                    List<Courier> couriers = new ArrayList<>();
+
+                    System.out.println("First name: ");
+                    String ftname = scanner.next();
+                    System.out.println("Last name: ");
+                    String lsname = scanner.next();
+                    System.out.println("Phone number: ");
+                    String phnor = scanner.next();
+                    System.out.println("Id courier: (must be uniq)");
+                    int idc = scanner.nextInt();
+
+                    couriers.add(new Courier(idc, ftname, lsname, phnor));
+                    CourierDbRepo crepo = new CourierDbRepo(db);
+                    crepo.save(couriers);
+                    break;
+                case 7 :
+                    List<Products> pr = new ArrayList<>();
+
+                    System.out.println("Name: ");
+                    String name = scanner.next();
+                    System.out.println("Price: ");
+                    double price = scanner.nextDouble();
+                    System.out.println("Quantity: ");
+                    int quantity = scanner.nextInt();
+
+                    pr.add(new Products(name, price, quantity));
+                    ProductDbRepo prepo = new ProductDbRepo(db);
+                    prepo.save(pr);
+                    break;
+
+                case 8 :
+                    List<Order> or = new ArrayList<>();
+
+                    System.out.println("Id bill: ");
+                    int idbill = scanner.nextInt();
+                    System.out.println("Id delivery company: ");
+                    int idDelc = scanner.nextInt();
+                    Client client = new Client();
+                    System.out.println("First name: ");
+                    String fname1 = scanner.next();
+                    System.out.println("Last name: ");
+                    String lname1 = scanner.next();
+                    System.out.println("Phone number: ");
+                    String phno1 = scanner.next();
+                    System.out.println("Email: ");
+                    String email1 = scanner.next();
+                    System.out.println("Address: ");
+                    scanner.useDelimiter("\n");
+                    String address1 = scanner.next();
+                    client = new Client(fname1, lname1, phno1, email1, address1);
+
+                    or.add(new Order(idbill, idDelc, client));
+                    OrderDbRepo orepo = new OrderDbRepo(db);
+                    orepo.save(or);
+
+                case 0:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid Option!");
+            }
+        }
+        else
+            System.out.println("Invalid Option! Try again.");
+        return executeOptionDB();
+    }
+
+    public int executeOption() throws InvalidDataException, SQLException, ClassNotFoundException {
+
+        Scanner sc = new Scanner(System.in);
+        int option = 0;
+        Menu();
+        System.out.println(" Choose an option: ");
+
+        option = sc.nextInt();
+        if(option >= 0 && option < 11) {
+
+            switch (option) {
+                case 1: {
+                    String clasa;
+                    System.out.println("Choose the class: (Courier/DeliveryC/Bill/Client/Order/Distributors/Products)");
+                    clasa = sc.next();
+                    switch (clasa) {
+                        case "Bill": {
+                            readBill();
+                            audit("Added new bill!");
+                            break;
+                        }
+                        case "Courier": {
+                            readCourier();
+                            audit("Added new courier!");
+                            break;
+                        }
+                        case "Client": {
+                            readClient();
+                            audit("Added new client!");
+                            break;
+                        }
+                        case "Products": {
+                            readProduct();
+                            audit("Added new product!");
+                            break;
+                        }
+                        case "DeliveryC": {
+                            readDeliveryC();
+                            audit("Added new delivery company!");
+                            break;
+                        }
+                        case "Order": {
+                            readOrder();
+                            audit("Added new order!");
+                            break;
+                        }
+                        case "Distributors": {
+                            readDistributor();
+                            audit("Added new distributor!");
+                            break;
+                        }
+
+                    }
+                    break;
+
+                }
+
+                case 2: {
+                    String clasa;
+                    System.out.println("Choose the class: (Courier/DeliveryC/Bill/Client/Order/Distributors/Products)");
+                    clasa = sc.next();
+                    switch (clasa) {
+                        case "Bill": {
+                            printAllBills();
+                            break;
+                        }
+                        case "Courier": {
+                            printAllCouriers();
+                            break;
+                        }
+                        case "Client": {
+                            printAllClients();
+                            break;
+                        }
+                        case "Products": {
+                            printAllProducts();
+                            break;
+                        }
+                        case "Oder": {
+                            printAllOrders();
+                            break;
+                        }
+                        case "DeliveryC": {
+                            printAllDeliveryC();
+                            break;
+                        }
+
+                    }
+                }
+                break;
+
+
+                case 0:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid Option!");
+
+            case 3:
+                updateOrder();
+                audit("Order updated!");
+                break;
+
+            case 5:
+                System.out.println("Delete the client with the id: ");
+                int idc = sc.nextInt();
+                sc.nextLine();
+                clientService.deleteClient(idc);
+                audit("Client deleted");
+                break;
+
+            case 6:
+                System.out.println("Delete the order with the id: ");
+                int id = sc.nextInt();
+                sc.nextLine();
+                orderService.deleteOrder(id);
+                audit("Order deleted");
+                break;
+
+            case 7:
+                System.out.println("Delete the product with the id: ");
+                int ind = sc.nextInt();
+                productService.deleteProduct(ind);
+                audit("Product deleted");
+                break;
+
+            case 8:
+                List<Products> prodVector = productService.getAllProducts();
+
+                Collections.sort(prodVector, Products::compareTo);
+                System.out.println(List.of(prodVector));
+
+                break;
+
+            case 9:
+                System.out.println("Index prod: ");
+                int inp = sc.nextInt();
+                System.out.println("New quantity: ");
+                int newQ = sc.nextInt();
+
+                productService.updateProduct(newQ, inp);
+                audit("Product quantity updated!");
+                break;
+
+
+            case 10:
+                List<Distributors> disVect = distributorsService.getAllDistributors();
+
+                Collections.sort(disVect, Distributors::compareTo);
+                System.out.println(List.of(disVect));
+                break;
+            }
+
+        }
+
+        else
+        System.out.println("Invalid Option! Try again.");
+        return executeOption();
+        }
+
 
 
     public void loadCSVFILES() {
@@ -57,126 +399,6 @@ public class Services {
         auditServices.write(action, dtf.format(timeNow));
     }
 
-    private void Menu() {
-
-        System.out.println("******* Managing the orders of a store *******");
-        System.out.println("--- What do you want to do? ---");
-        System.out.println();
-        System.out.println("1. Read ");
-        System.out.println("2. Print ");
-        System.out.println("3. Update order");
-        System.out.println("4. Update bill ");
-        System.out.println("5. Update client's address ");
-        System.out.println("6. Delete order");
-        System.out.println("7. Delete distributor");
-        System.out.println("8. Sortare produse dupa pret. (asc/desc)");
-        System.out.println("9. Listarea comenzilor unui client.");
-        System.out.println("10. Update product price ");
-        System.out.println("0. Iesire. ");
-
-
-    }
-
-    public int executeOption() throws InvalidDataException {
-
-        Scanner sc = new Scanner(System.in);
-        int option = 0;
-        Menu();
-        System.out.println(" Choose an option: ");
-
-        option = sc.nextInt();
-        if(option >= 0 && option < 11) {
-
-            switch (option) {
-                case 1: {
-                    String clasa;
-                    System.out.println("Choose the class: (Courier/DeliveryC/Bill/Client/Order/Distributors/Products)");
-                    clasa = sc.next();
-                    switch (clasa) {
-                        case "Bill": {
-                            readBill();
-                            audit("Added new bill!");
-                            break;
-                        }
-                        case "Courier": {
-                            readCourier();
-                            audit("Added new courier!");
-                            break;
-                        }
-                        case "Client":{
-                            readClient();
-                            audit("Added new client!");
-                            break;
-                        }
-                        case "Products":{
-                            readProduct();
-                            audit("Added new product!");
-                            break;
-                        }
-                        case "DeliveryC":{
-                            readDeliveryC();
-                            audit("Added new delivery company!");
-                            break;
-                        }
-                        case "Order":{
-                            readOrder();
-                            audit("Added new order!");
-                            break;
-                        }
-
-
-                    }
-                }
-                break;
-                case 2: {
-                    String clasa;
-                    System.out.println("Choose the class: (Courier/DeliveryC/Bill/Client/Order/Distributors/Products)");
-                    clasa = sc.next();
-                    switch (clasa) {
-                        case "Bill": {
-                            printAllBills();
-                            break;
-                        }
-                        case "Courier": {
-                            printAllCouriers();
-                            break;
-                        }
-                        case "Client":{
-                            printAllClients();
-                            break;
-                        }
-                        case "Products": {
-                            printAllProducts();
-                            break;
-                        }
-                        case "Oder": {
-                            printAllOrders();
-                            break;
-                        }
-                        case "DeliveryC": {
-                            printAllDeliveryC();
-                            break;
-                        }
-
-                    }
-                }
-                break;
-
-
-                case 0:
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("Invalid Option!");
-
-
-            }
-        }
-        else
-        System.out.println("Invalid Option! Try again.");
-        return executeOption();
-        }
-
     private void readOrder() throws InvalidDataException {
 
         System.out.println("Id order: ");
@@ -185,9 +407,10 @@ public class Services {
         int idbill = scanner.nextInt();
         System.out.println("Id delivery company: ");
         int idDelc = scanner.nextInt();
-        int clindex = Integer.parseInt(scanner.nextLine());
+        System.out.println("Client index: ");
+        int clIndex = scanner.nextInt();
 
-        orderService.addNewOrder(idorder, idbill, idDelc, clindex);
+        orderService.addNewOrder(idorder, idbill, idDelc, clIndex);
 
 
     }
@@ -210,7 +433,7 @@ public class Services {
             String phno = scanner.next();
             System.out.println("Id courier: (must be uniq)");
             int idc = scanner.nextInt();
-            Courier c = new Courier(fname, lname, phno, idc);
+            Courier c = new Courier(idc, fname, lname, phno);
 
             couriers.add(c);
         }
@@ -243,6 +466,8 @@ public class Services {
         }
         //double totalPrice = calculatePrice(list, noprod);
         double totalPrice=0;
+        System.out.println("Total price is: ");
+        totalPrice = scanner.nextDouble();
         for(int i=0; i < noprod; i++){
             //    totalPrice = totalPrice + list.price(i) * list.quantity(i);
         }
@@ -256,6 +481,33 @@ public class Services {
         //billService.addNewBill(idbill, list, totalPrice);
 
 
+    }
+
+    private void readDistributor() {
+        System.out.println("CUI: ");
+        int cui = scanner.nextInt();
+        System.out.println("Name of distributor: ");
+        String nameD = scanner.next();
+        System.out.println("City : ");
+        String city = scanner.next();
+        System.out.println("Number of products: ");
+        int noprod = scanner.nextInt();
+        ArrayList<Products> list = new ArrayList<>();
+
+        for(int i=0; i < noprod; i++)
+        {
+            System.out.println("Name: ");
+            String name = scanner.next();
+            System.out.println("Price: ");
+            double price = scanner.nextDouble();
+            System.out.println("Quantity: ");
+            int quantity = scanner.nextInt();
+
+            Products p = new Products(name, price, quantity);
+            list.add(p);
+
+        }
+        distributorsService.addNewDistributor(cui, nameD, city, list);
     }
 
     public double calculatePrice(ArrayList<Products> prod, int noprod){
@@ -312,20 +564,7 @@ public class Services {
 
 
     }
-    public Products readArrProduct() throws InvalidDataException {
-        //ArrayList<Products> arrayList = new ArrayList<>();
-        System.out.println("Name: ");
-        String name = scanner.next();
-        System.out.println("Price: ");
-        double price = scanner.nextDouble();
-        System.out.println("Quantity: ");
-        int quantity = scanner.nextInt();
 
-        //arrayList.addNewProduct(name, price, quantity);
-        System.out.println("Product added!");
-        return new Products(name, price, quantity);
-
-    }
 
     void printAllBills(){
         ArrayList<Bill> billVector = billService.getAllBills();
@@ -391,6 +630,38 @@ public class Services {
             System.out.println(product);
         }
     }
+
+    void updateOrder() {
+        System.out.print("Order index:");
+        int index = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Update client :");
+        int clIndex = scanner.nextInt();
+
+        orderService.updateClient(index, clIndex);
+
+    }
+
+//    private void searchAllOrders(String email, List<Order> comenzi){
+//        boolean OK = false;
+//        for (OrderService comanda : comenzi) {
+//            if(comanda.getClientRepository()..equalsIgnoreCase(email)) {
+//                System.out.println(comanda);
+//                OK = true;
+//            }
+//        }
+//        if(!OK)
+//            System.out.println("Client with email " + email + " didn't make any order");
+//
+//        return bankAccounts.stream()
+//                .filter(bankAccount -> bankAccount.getClient() != null &&
+//                        bankAccount.getClient().getEmail() != null &&
+//                        bankAccount.getClient().getEmail().equals(clientEmail))
+//                .count();
+//    }
+
+
+
 
 
 

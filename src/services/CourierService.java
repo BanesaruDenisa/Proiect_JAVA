@@ -36,7 +36,7 @@ public class CourierService {
         ////exceptii
         if(phoneNumber.length() != 10 || !phoneNumber.matches("07[0-9]+"))
             throw new InvalidDataException("Phone number must be 10 digits long and start with 0!");
-        Courier newCourier = new Courier(firstname,lastname, phoneNumber, idCourier);
+        Courier newCourier = new Courier(idCourier, firstname,lastname, phoneNumber);
         courierRepository.add(newCourier);
     }
 

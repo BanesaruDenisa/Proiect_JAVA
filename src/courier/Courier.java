@@ -12,7 +12,7 @@ public class Courier extends Person {
 
     }
 
-    public Courier(String firstname, String lastname, String phoneNumber, int idCourier) {
+    public Courier(int idCourier, String firstname, String lastname, String phoneNumber) {
         super(firstname, lastname, phoneNumber);
         this.idCourier = idCourier;
     }

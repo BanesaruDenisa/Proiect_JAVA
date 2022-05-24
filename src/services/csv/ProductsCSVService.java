@@ -11,16 +11,17 @@ import java.util.List;
 
 public class ProductsCSVService implements GenericCSV<Products> {
 
-    private static final ProductsCSVService INSTANCE = new ProductsCSVService();
+    private static ProductsCSVService INSTANCE = new ProductsCSVService();
 
     private ProductsCSVService() {
     }
 
     public static ProductsCSVService getInstance() {
-//        if (INSTANCE == null) {
-//            ClientCSV INSTANCE = new ClientCSV();
-//            return INSTANCE;
-//        }
+
+        if(INSTANCE == null) {
+            INSTANCE = new ProductsCSVService();
+        }
+
         return  INSTANCE;
     }
 

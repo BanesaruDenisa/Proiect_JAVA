@@ -3,7 +3,7 @@ package product;
 
 import java.util.ArrayList;
 
-public class Products extends ArrayList<Products> {
+public class Products extends ArrayList<Products> implements Comparable<Products> {
 
     private String name;
     private double price;
@@ -57,6 +57,14 @@ public class Products extends ArrayList<Products> {
                 ", quantity=" + quantity +
                 '}';
     }
+
+    @Override
+    public int compareTo(Products o) {
+
+        int compQuan =((Products)o).getQuantity();
+        return this.quantity - compQuan;
+    }
+
 
 
     //    public void add(Vector<Products> products) {

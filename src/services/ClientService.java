@@ -46,8 +46,13 @@ public class ClientService {
         clientRepository.update(id, Client);
     }
 
-    public void deleteClient(int id)  {
-        clientRepository.delete(id);
+
+    public boolean deleteClient(int id) {
+        if (id >= 0 && id < clientRepository.getSize()) {
+            clientRepository.delete(id);
+            return true;
+        }
+        return false;
     }
 
     public void getFromCSVFile(){

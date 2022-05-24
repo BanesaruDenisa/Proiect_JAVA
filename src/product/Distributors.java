@@ -3,7 +3,7 @@ package product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Distributors {
+public class Distributors implements Comparable<Distributors>{
 
     private int CUI;
     private String name;
@@ -61,5 +61,22 @@ public class Distributors {
     }
     public void addProduct(Products products){
         productsList.add(products);
+    }
+
+    @Override
+    public String toString() {
+        return "Distributors{" +
+                "CUI=" + CUI +
+                ", name='" + name + '\'' +
+                ", city='" + city + '\'' +
+                ", productsList=" + productsList +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Distributors d) {
+
+        int compNo =((Distributors)d).getProductsList().size();
+        return this.productsList.size() - compNo;
     }
 }

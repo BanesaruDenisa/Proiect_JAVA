@@ -5,22 +5,23 @@ package services.csv;
 import order.Client;
 import order.Order;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class OrderCSVService implements GenericCSV<Order> {
 
-    private static final OrderCSVService INSTANCE = new OrderCSVService();
+    private static OrderCSVService INSTANCE = new OrderCSVService();
 
     private OrderCSVService() {
     }
 
     public static OrderCSVService getInstance() {
 
+        if(INSTANCE == null) {
+            INSTANCE = new OrderCSVService();
+        }
         return  INSTANCE;
     }
 
@@ -29,12 +30,13 @@ public class OrderCSVService implements GenericCSV<Order> {
 
 
         try(FileWriter fileWriter = new FileWriter("files/orders.csv", true)) {
-            Client client = new Client(orders.getclient());
+            Client client = new Client(orders.getClient());
+
 
             fileWriter.write(orders.getIdOrder() + "," + orders.getIdBill() + ","
                                 + orders.getIdDelComp()  + "," +
                                 client.getFirstName() + "," + client.getLastName() + "," +
-                                client.getPhonenumber() + "," + client.getEmail() + "," + client.getAddress() + "\n");
+                                client.getPhonenumber() + "," + client.getEmail() + "," + client.getAddress() + "\n") ;
             fileWriter.flush();
         } catch (IOException ex) {
             System.out.println("Can't write to file!");

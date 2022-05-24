@@ -30,16 +30,22 @@ public class Order {
         this.client = order.client;
     }
 
+    public Order(int idbill, int idDelc, Client cl) {
+        this.idBill = idBill;
+        this.idDelComp = idDelComp;
+        this.client = cl;
+    }
+
     public void setIdOrder(Integer idOrd){
         this.idOrder = idOrd;
     }
     public Integer getIdOrder(){
         return idOrder;
     }
-    public void setclient(Client client){
+    public void setClient(Client client){
         this.client = client;
     }
-    public Client getclient(){
+    public Client getClient(){
         return client;
     }
     public void setIdBill(Integer idBill){
@@ -64,4 +70,5 @@ public class Order {
                 ", client='" + client + '\'' +
                 '}';
     }
+
 }

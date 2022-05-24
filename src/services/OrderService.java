@@ -44,8 +44,25 @@ public class OrderService {
         orderRepository.update(id, order);
     }
 
-    public void deleteOrder(int id)  {
-        orderRepository.delete(id);
+    public boolean updateClient(int ordIndex, int clientIndex) {
+        if(ordIndex <0 || ordIndex >= orderRepository.getSize())
+        {  return false;}
+
+        Order oldOrd = new Order(orderRepository.get(ordIndex));
+        Order newOrd = new Order(oldOrd);
+        newOrd.setClient(clientRepository.get(clientIndex));
+        orderRepository.delete(ordIndex);
+        orderRepository.add(newOrd);
+        return true;
+    }
+
+
+    public boolean deleteOrder(int id) {
+        if (id >= 0 && id < orderRepository.getSize()) {
+            orderRepository.delete(id);
+            return true;
+        }
+        return false;
     }
 
     public void getFromCSVFile(){
@@ -62,5 +79,23 @@ public class OrderService {
         for(Order order : orListCsv){
             orderCSV.write(order);
         }
+    }
+
+    public ClientRepository getClientRepository() {
+        return clientRepository;
+    }
+
+
+    public void setClientRepository(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
+
+
+    public long getOrdersss(String email, List<Order> comenzi){
+        return comenzi.stream()
+                .filter(comanda -> comanda.getClient() != null &&
+                        comanda.getClient().getEmail() != null &&
+                        comanda.getClient().getEmail().equals(email))
+                .count();
     }
 }

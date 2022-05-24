@@ -13,7 +13,7 @@ import java.util.List;
 public class ProductService {
 
     private ProductsRepository productRepository = new ProductsRepository();
-
+    private Products p = new Products();
 
     public ArrayList<Products> getAllProducts() {
 
@@ -57,12 +57,20 @@ public class ProductService {
         }
     }
 
-    public void updateProduct(int id, Products product) {
-        productRepository.update(id, product);
+    public void updateProduct(int quantity, int indexP)
+    {
+        Products oldP = new Products(productRepository.get(indexP));
+        Products newP = new Products(oldP);
+        newP.setQuantity(quantity);
+        productRepository.update(indexP, newP);
     }
 
-    public void deleteProduct(int id)  {
-        productRepository.delete(id);
+    public boolean deleteProduct(int id) {
+        if (id >= 0 && id < productRepository.getSize()) {
+            productRepository.delete(id);
+            return true;
+        }
+        return false;
     }
 
 
@@ -81,4 +89,6 @@ public class ProductService {
             prodCSV.write(pr);
         }
     }
+
+
 }

@@ -1,27 +1,29 @@
 package services.csv;
 
 import order.Client;
+import org.w3c.dom.css.CSSValue;
 
+import javax.sound.midi.Soundbank;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.DriverManager;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientCSVService implements GenericCSV<Client> {
 
-    private static final ClientCSVService INSTANCE = new ClientCSVService();
+    private static ClientCSVService INSTANCE = new ClientCSVService();
 
     private ClientCSVService() {
     }
 
     public static ClientCSVService getInstance() {
-//        if (INSTANCE == null) {
-//            INSTANCE =
-//            return INSTANCE;
-//        }
+        if(INSTANCE == null) {
+            INSTANCE = new ClientCSVService();
+        }
         return  INSTANCE;
     }
 
@@ -31,7 +33,8 @@ public class ClientCSVService implements GenericCSV<Client> {
         try(FileWriter fileWriter = new FileWriter("files/clients.csv", true)) {
             fileWriter.write(client.getFirstName()+ "," + client.getLastName() + ","
                     + client.getPhonenumber() + "," + client.getEmail() + ","
-                    + client.getAddress() + "\n");
+                    + client.getAddress() );
+            System.out.println("am scris");
             fileWriter.flush();
         } catch (IOException ex) {
             System.out.println("Can't write to file!");
@@ -43,6 +46,7 @@ public class ClientCSVService implements GenericCSV<Client> {
     public List<Client> read() {
         List<Client> clients = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("files/clients.csv"))) {
+
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] words = line.split(",");

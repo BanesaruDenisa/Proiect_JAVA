@@ -11,13 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourierCSVService implements GenericCSV<Courier> {
-    private static final CourierCSVService INSTANCE = new CourierCSVService();
+    private static  CourierCSVService INSTANCE = new CourierCSVService();
 
     private CourierCSVService() {
     }
 
     public static CourierCSVService getInstance() {
-
+        if(INSTANCE == null) {
+            INSTANCE = new CourierCSVService();
+        }
         return  INSTANCE;
     }
 
@@ -41,7 +43,7 @@ public class CourierCSVService implements GenericCSV<Courier> {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] words = line.split(",");
-                Courier courier = new Courier(words[0], words[1], words[2], Integer.parseInt(words[3]));
+                Courier courier = new Courier( Integer.parseInt(words[0]), words[1], words[2], words[3]);
                 couriers.add(courier);
             }
         } catch (IOException ex) {
