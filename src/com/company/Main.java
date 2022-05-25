@@ -42,10 +42,5 @@ public class Main {
                 myServ.executeOptionDB();
         }
 
-
-
-
-       // crDB.deleteC(1);
-       // System.out.println("courier deleted");
     }
 }
