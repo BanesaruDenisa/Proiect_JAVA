@@ -33,8 +33,6 @@ public class Services {
     private DistributorsService distributorsService = new DistributorsService();
     private OrderService orderService = new OrderService();
 
-    //10
-    List<Order> orders = orderService.getAllOrders();
 
 
     public Services(){}
@@ -77,7 +75,19 @@ public class Services {
         System.out.println("6. Courier ");
         System.out.println("7. Product ");
         System.out.println("8. Order ");
+        System.out.println("-- Delete a row by index --");
+        System.out.println("9. Client  ");
+        System.out.println("10. Courier ");
+        System.out.println("11. Product ");
+        System.out.println("12. Order ");
+        System.out.println("-- Update a field by index --");
+        System.out.println("13. Client ");
+        System.out.println("14. Courier ");
+        System.out.println("15. Product ");
+        System.out.println("16. Order ");
         System.out.println("0. Exit. ");
+
+        ///am facut meniul asa pentru simplitatea testarii sa introduc doar numarul :)
 
 
     }
@@ -92,7 +102,7 @@ public class Services {
         System.out.println(" Choose an option: ");
 
         option = sc.nextInt();
-        if (option >= 0 && option < 9) {
+        if (option >= 0 && option < 17) {
 
             switch (option) {
                 case 1 :
@@ -198,7 +208,55 @@ public class Services {
                     or.add(new Order(idbill, idDelc, client));
                     OrderDbRepo orepo = new OrderDbRepo(db);
                     orepo.save(or);
+                    break;
+                case 9 :
+                    Client clientLst = new Client();
 
+                    ClientDbRepo cld = new ClientDbRepo(db);
+                    cld.deleteCl(clientLst);
+                    break;
+
+                case 10 :
+                    Courier courierLst = new Courier();
+
+                    CourierDbRepo crd = new CourierDbRepo(db);
+                    crd.deleteC(courierLst);
+                    break;
+                case 11 :
+                    Products productsLst = new Products();
+
+                    ProductDbRepo productDbRepo = new ProductDbRepo(db);
+                    productDbRepo.deleteP(productsLst);
+                    break;
+                case 12 :
+                    Order ord = new Order();
+
+                    OrderDbRepo ordRepo = new OrderDbRepo(db);
+                    ordRepo.deleteO(ord);
+                    break;
+                case 13:
+                    Client client1 = new Client();
+
+                    ClientDbRepo clientDbRepo = new ClientDbRepo(db);
+                    clientDbRepo.updateCl(client1);
+                    break;
+                case 14:
+                    Courier courier1 = new Courier();
+
+                    CourierDbRepo courierDbRepo1 = new CourierDbRepo(db);
+                    courierDbRepo1.updateCr(courier1);
+                    break;
+                case 15 :
+                    Products products1 = new Products();
+
+                    ProductDbRepo productDbRepo1 = new ProductDbRepo(db);
+                    productDbRepo1.updateP(products1);
+                    break;
+                case 16 :
+                    Order order1 = new Order();
+                    OrderDbRepo ordRepo1 = new OrderDbRepo(db);
+                    ordRepo1.update(order1);
+                    break;
                 case 0:
                     System.exit(0);
                     break;
@@ -468,17 +526,17 @@ public class Services {
         double totalPrice=0;
         System.out.println("Total price is: ");
         totalPrice = scanner.nextDouble();
-        for(int i=0; i < noprod; i++){
+        //for(int i=0; i < noprod; i++){
             //    totalPrice = totalPrice + list.price(i) * list.quantity(i);
-        }
+       // }
         billService.addNewBill(idbill, list, totalPrice);
 
 
 //        System.out.println("Total price: ");
 //        double totalPrice = scanner.nextDouble();
-        //totalPrice = setTotalPrice(list.calculatePrice(prod)) ;
-        //double totalPrice = calculatePrice(list,noprod );
-        //billService.addNewBill(idbill, list, totalPrice);
+//        totalPrice = setTotalPrice(list.calculatePrice(prod)) ;
+//        double totalPrice = calculatePrice(list,noprod );
+//        billService.addNewBill(idbill, list, totalPrice);
 
 
     }
@@ -574,7 +632,6 @@ public class Services {
         for(Bill bill : billVector) {
             for(Products products: prodVector)
                 System.out.println(bill.getProducts(products));
-           // printAllProducts(billVector);
 
 
         }
@@ -588,8 +645,6 @@ public class Services {
         for(DeliveryCompany delcomp : compVector) {
             for(Courier courier: couriersVector)
             System.out.println(delcomp);
-
-
 
         }
     }
@@ -641,29 +696,6 @@ public class Services {
         orderService.updateClient(index, clIndex);
 
     }
-
-//    private void searchAllOrders(String email, List<Order> comenzi){
-//        boolean OK = false;
-//        for (OrderService comanda : comenzi) {
-//            if(comanda.getClientRepository()..equalsIgnoreCase(email)) {
-//                System.out.println(comanda);
-//                OK = true;
-//            }
-//        }
-//        if(!OK)
-//            System.out.println("Client with email " + email + " didn't make any order");
-//
-//        return bankAccounts.stream()
-//                .filter(bankAccount -> bankAccount.getClient() != null &&
-//                        bankAccount.getClient().getEmail() != null &&
-//                        bankAccount.getClient().getEmail().equals(clientEmail))
-//                .count();
-//    }
-
-
-
-
-
 
 
 }

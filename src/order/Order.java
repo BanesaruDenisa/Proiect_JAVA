@@ -36,6 +36,9 @@ public class Order {
         this.client = cl;
     }
 
+    public Order(int id_o, int id_b, int id_d, String email) {
+    }
+
     public void setIdOrder(Integer idOrd){
         this.idOrder = idOrd;
     }

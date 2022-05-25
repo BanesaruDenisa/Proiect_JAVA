@@ -9,6 +9,7 @@ import repository.CourierRepository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class CourierDbRepo extends CourierRepository {
 
@@ -64,11 +65,37 @@ public class CourierDbRepo extends CourierRepository {
 
     }
 
-    public void deleteC(int id) {
+    public void deleteC(Courier courier) {
+
         String query = "Delete from courier where id_courier = ?";
+        System.out.println("Enter the courier id to be deleted: ");
+        Scanner sc = new Scanner(System.in);
+        int id = sc.nextInt();
         try (PreparedStatement preparedStatement = dbconnection.prepareStatement(query)) {
 
-           preparedStatement.setInt(1, id);
+
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.execute();
+                    System.out.println("Courier deleted! ");
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCr(Courier courier) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the courier id to be updated: ");
+        int id = scanner.nextInt();
+        System.out.println("Enter the new address: ");
+        String phn = scanner.next();
+        String query = "Update courier set phone_number=? where id_courier = ?";
+        try (PreparedStatement preparedStatement = dbconnection.prepareStatement(query)) {
+            preparedStatement.setString(1, phn);
+            preparedStatement.setInt(2, id);
+            preparedStatement.execute();
+            System.out.println("Courier updated !");
+
         } catch (SQLException e){
             e.printStackTrace();
         }

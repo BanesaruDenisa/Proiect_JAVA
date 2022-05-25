@@ -27,10 +27,6 @@ public class Main {
         Services myServ = new Services();
 
 
-//        myServ.executeOption();
-//        myServ.loadCSVFILES();
-//        myServ.listCSVFILES();
-
         System.out.println("Choose terminal or database (enter t or d): ");
         Scanner sc = new Scanner(System.in);
         String opt;
@@ -41,6 +37,7 @@ public class Main {
                 myServ.executeOption();
                 myServ.loadCSVFILES();
                 myServ.listCSVFILES();
+
             case "d":
                 myServ.executeOptionDB();
         }
