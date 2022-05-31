@@ -1,7 +1,7 @@
 # Proiect_JAVA
 Title: Managing orders of an online store
 
-1. Defining the structure ( minimum of 8 classes):
+1) Defining the structure ( minimum of 8 classes):
 - Package Courier
     * Courier
     * Delivery Company
@@ -18,7 +18,7 @@ Title: Managing orders of an online store
    * Services
 
 
-2. Implementation of actions:
+2) Implementation of actions:
 
   1. Read.
   2. Print.
