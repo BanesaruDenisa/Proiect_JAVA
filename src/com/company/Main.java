@@ -22,7 +22,7 @@ public class Main {
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException, InvalidDataException {
 
-        DBConnection db = new DBConnection("jdbc:mysql://localhost:3306/store", "root", "bananaverde.ro20");
+        DBConnection db = new DBConnection("jdbc:mysql://localhost:3306/store", "root", "pass");
 
         Services myServ = new Services();
 
